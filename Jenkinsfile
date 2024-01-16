@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     stages {
-        sstage('Check Docker') {
+        stage('Check Docker') {
             steps {
                 script {
                     // Add Docker to PATH
