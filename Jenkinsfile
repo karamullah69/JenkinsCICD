@@ -1,69 +1,28 @@
 pipeline {
-    agent {
-        node {
-            label 'docker-my'
-        }
-    }
+    agent any
 
     stages {
-        stage('Check Docker') {
+        stage('Checkout') {
             steps {
-                script {
-                    // Add Docker to PATH
-                    def dockerPath = tool 'Docker'
-                    env.PATH = "${dockerPath}:${env.PATH}"
-
-                    // Verify Docker installation
-                    sh 'docker --version'
-                }
+                checkout scm
             }
         }
-        
-        stage('Build Hello World 1') {
+        stage('Build and Push Docker Images') {
             steps {
                 script {
-                    // Add Docker to PATH
-                    def dockerPath = tool 'Docker'
-                    env.PATH = "${dockerPath}:${env.PATH}"
-                    // Build Docker image for hello-world-1
-                    dir('hello-world-1/src') {
-                        sh 'docker build -t hello-world-1:latest .'
-                    }
+                    def app1Image = docker.build("my-app1:${env.BUILD_ID}", "./app1")
+                    app1Image.push()
+
+                    def app2Image = docker.build("my-app2:${env.BUILD_ID}", "./app2")
+                    app2Image.push()
                 }
             }
         }
 
-        stage('Deploy Hello World 1') {
+        stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    // Deploy to Kubernetes for hello-world-1
-                    kubernetesDeploy(
-                        kubeconfigId: 'your-kubeconfig',
-                        configs: 'deployment1.yaml'
-                    )
-                }
-            }
-        }
-
-        stage('Build Hello World 2') {
-            steps {
-                script {
-                    // Build Docker image for hello-world-2
-                    dir('hello-world-2/src') {
-                        sh 'docker build -t hello-world-2:latest .'
-                    }
-                }
-            }
-        }
-
-        stage('Deploy Hello World 2') {
-            steps {
-                script {
-                    // Deploy to Kubernetes for hello-world-2
-                    kubernetesDeploy(
-                        kubeconfigId: 'your-kubeconfig',
-                        configs: 'deployment2.yaml'
-                    )
+                    sh 'kubectl apply -f k8s/deployment.yaml'
                 }
             }
         }
