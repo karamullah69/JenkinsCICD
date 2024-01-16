@@ -1,9 +1,8 @@
 pipeline {
     agent {
-        docker {
-            image 'docker:dind'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
+        node {
+            label 'docker-agent-python'
+            }
     }    
     
     stages {
