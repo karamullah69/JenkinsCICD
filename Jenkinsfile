@@ -18,7 +18,7 @@ pipeline {
         stage('Build and Push Docker Images') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io', DOCKER_HUB_CREDENTIALS) {
+                    docker.withRegistry('https://index.docker.io/v2/', DOCKER_HUB_CREDENTIALS) {
                         // Build and push Hello World 1 image
                         def dockerImage1 = docker.build("karamullah69/hello-world-1:latest", "-f Dockerfile1 .")
                         dockerImage1.push()
