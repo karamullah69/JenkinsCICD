@@ -33,7 +33,7 @@ pipeline {
                     // Deploy to Kubernetes for hello-world-1
                     kubernetesDeploy(
                         kubeconfigId: 'your-kubeconfig',
-                        configs: 'hello-world-1/kube/deployment.yaml'
+                        configs: 'deployment1.yaml'
                     )
                 }
             }
@@ -56,7 +56,7 @@ pipeline {
                     // Deploy to Kubernetes for hello-world-2
                     kubernetesDeploy(
                         kubeconfigId: 'your-kubeconfig',
-                        configs: 'hello-world-2/kube/deployment.yaml'
+                        configs: 'deployment2.yaml'
                     )
                 }
             }
