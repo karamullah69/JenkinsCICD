@@ -6,6 +6,15 @@ pipeline {
     }    
     
     stages {
+        stage('Check Environment') {
+            steps {
+                script {
+                    sh 'echo "PATH=$PATH"'
+                    sh 'docker --version'
+                }
+            }
+        }
+        
         stage('Build Hello World 1') {
             steps {
                 script {
