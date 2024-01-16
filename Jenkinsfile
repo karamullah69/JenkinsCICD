@@ -14,6 +14,9 @@ pipeline {
         stage('Build Hello World 1') {
             steps {
                 script {
+                    // Add Docker to PATH
+                    def dockerPath = tool 'Docker'
+                    env.PATH = "${dockerPath}:${env.PATH}"
                     // Build Docker image for hello-world-1
                     dir('hello-world-1/src') {
                         sh 'docker build -t hello-world-1:latest .'
