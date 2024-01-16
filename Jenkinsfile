@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-    
+    agent {
+        node {
+            label 'docker-my'
+        }
+    }
+
     stages {
         stage('Check Docker') {
             steps {
