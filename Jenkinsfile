@@ -2,10 +2,14 @@ pipeline {
     agent any
     
     stages {
-        stage('Check Environment') {
+        sstage('Check Docker') {
             steps {
                 script {
-                    sh 'echo "PATH=$PATH"'
+                    // Add Docker to PATH
+                    def dockerPath = tool 'Docker'
+                    env.PATH = "${dockerPath}:${env.PATH}"
+
+                    // Verify Docker installation
                     sh 'docker --version'
                 }
             }
