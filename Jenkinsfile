@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        node {
-            label 'docker-agent-alpine'
-            }
-    }    
+    agent any
     
     stages {
         stage('Check Environment') {
