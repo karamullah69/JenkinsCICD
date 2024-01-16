@@ -1,11 +1,6 @@
 pipeline {
     agent any
-    
-    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('1dd069a1-4b2b-46e2-8cfb-3f61a21a77e0') // Create Jenkins credentials for Docker Hub
-        KUBE_CONFIG = credentials('4a8a395b-6461-49c3-a397-0746bc1d1348') // Create Jenkins credentials for Kubernetes config file
-    }
-    
+  
     stages {
         stage('Checkout') {
             steps {
@@ -18,14 +13,14 @@ pipeline {
         stage('Build and Push Docker Images') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        // Build and push Hello World 1 image
-                        def dockerImage1 = docker.build("karamullah69/hello-world-1:latest", "-f Dockerfile1 .")
-                        dockerImage1.push()
-
-                        // Build and push Hello World 2 image
-                        def dockerImage2 = docker.build("karamullah69/hello-world-2:latest", "-f Dockerfile2 .")
-                        dockerImage2.push()
+                    docker.build(DOCKER_IMAGE_NAME_1)
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker') {
+                        docker.image(DOCKER_IMAGE_NAME_1).push()
+                    }
+                    docker.build(DOCKER_IMAGE_NAME_2)
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker') {
+                        docker.image(DOCKER_IMAGE_NAME_2).push()
+                    }
                     }
                 }
             }
