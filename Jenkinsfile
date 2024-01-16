@@ -2,8 +2,8 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('1dd069a1-4b2b-46e2-8cfb-3f61a21a77e0') // Create Jenkins credentials for Docker Hub
-        KUBE_CONFIG = credentials('4a8a395b-6461-49c3-a397-0746bc1d1348') // Create Jenkins credentials for Kubernetes config file
+        DOCKER_HUB_CREDENTIALS = credentials('docker-registry-credentials') // Create Jenkins credentials for Docker Hub
+        KUBE_CONFIG = credentials('your-kubeconfig') // Create Jenkins credentials for Kubernetes config file
     }
     
     stages {
